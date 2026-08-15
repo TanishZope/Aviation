@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✈ Smart Aviation · Glass UI</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #0b1c2f, #03070e);
+      color: #f0f9ff;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* GLASS CARD BASE */
+    .glass {
+      background: rgba(10, 30, 50, 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 200, 255, 0.20);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 200, 255, 0.05) inset;
+      border-radius: 32px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1300px;
+      margin: 24px auto 10px;
+      padding: 24px 32px;
+      background: rgba(6, 18, 30, 0.8);
+      backdrop-filter: blur(16px);
+      border-radius: 60px;
+      border: 1px solid rgba(0, 180, 255, 0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #a0e9ff, #00b4ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header h1 i {
+      font-size: 30px;
+      color: #00c8ff;
+    }
+
+    header p {
+      color: #b6d9f0;
+      font-weight: 400;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      background: rgba(0, 150, 255, 0.08);
+      padding: 6px 18px;
+      border-radius: 40px;
+      border: 1px solid rgba(0, 180, 255, 0.15);
+    }
+
+    nav {
+      width: 100%;
+      max-width: 1300px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 14px;
+      padding: 16px 20px;
+      margin: 12px 0 8px;
+      background: rgba(0, 20, 40, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 80px;
+      border: 1px solid rgba(0, 200, 255, 0.12);
+    }
+
+    nav a {
+      color: #d6ecff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 8px 18px;
+      border-radius: 40px;
+      transition: 0.2s;
+      letter-spacing: 0.2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    nav a i {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    nav a:hover {
+      background: rgba(0, 180, 255, 0.15);
+      color: #b0ecff;
+      box-shadow: 0 0 12px rgba(0, 180, 255, 0.2);
+      transform: scale(1.03);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 50px 20px 30px;
+      max-width: 900px;
+    }
+
+    .hero h2 {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(to right, #c0edff, #5bc0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: #b0d5f0;
+      font-weight: 300;
+      backdrop-filter: blur(4px);
+      display: inline-block;
+      padding: 6px 28px;
+      border-radius: 40px;
+      background: rgba(0, 40, 70, 0.3);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1300px;
+      margin: 10px auto 30px;
+    }
+
+    .section {
+      background: rgba(6, 22, 40, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 200, 255, 0.15);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
+      border-radius: 40px;
+      padding: 32px 30px;
+      margin: 30px 0;
+      transition: 0.2s;
+    }
+
+    .section h2 {
+      text-align: center;
+      color: #9edcff;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-size: 28px;
+    }
+
+    .section h2 i {
+      color: #00bfff;
+      font-size: 30px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      align-items: end;
+    }
+
+    /* special: passenger grid with centered button */
+    .form-grid.passenger-grid {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .form-grid.passenger-grid .button-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      grid-column: 1 / -1;
+      margin-top: 12px;
+    }
+
+    .form-grid.passenger-grid .button-wrapper button {
+      width: auto;
+      min-width: 200px;
+      padding: 14px 40px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(0, 180, 255, 0.2);
+      border-radius: 24px;
+      color: white;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s;
+      backdrop-filter: blur(4px);
+    }
+
+    input:focus, select:focus {
+      border-color: #00bfff;
+      background: rgba(0, 150, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.15);
+    }
+
+    input::placeholder {
+      color: #9bbad3;
+      font-weight: 300;
+    }
+
+    .datetime-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .datetime-group label {
+      color: #7fc9ff;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      margin-left: 6px;
+    }
+
+    .time-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button {
+      padding: 14px 24px;
+      border: none;
+      border-radius: 40px;
+      background: linear-gradient(135deg, #0088cc, #005f99);
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 6px 14px rgba(0, 80, 150, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    button i {
+      font-size: 16px;
+    }
+
+    button:hover {
+      transform: scale(1.02);
+      background: linear-gradient(135deg, #0099dd, #006bb3);
+      box-shadow: 0 8px 20px rgba(0, 120, 255, 0.4);
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box input {
+      width: 340px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .result {
+      display: none;
+      margin-top: 28px;
+      padding: 28px;
+      background: rgba(0, 30, 60, 0.5);
+      border-radius: 28px;
+      border: 1px solid rgba(0, 200, 255, 0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .result h3 {
+      color: #8fd6ff;
+      margin-bottom: 18px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .result p {
+      margin: 8px 0;
+      color: #d0eaff;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 16px;
+      border-radius: 40px;
+      background: #0f7b3a;
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #0f8b4a, #0a6a35);
+    }
+
+    .record-card {
+      background: rgba(0, 40, 70, 0.4);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(0, 200, 255, 0.12);
+      border-radius: 28px;
+      padding: 22px 26px;
+      margin-top: 18px;
+      transition: 0.15s;
+    }
+
+    .record-card:hover {
+      background: rgba(0, 60, 100, 0.4);
+      border-color: rgba(0, 200, 255, 0.25);
+    }
+
+    .record-card h3 {
+      color: #8fd6ff;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .record-card p {
+      margin: 6px 0;
+      color: #cde2f5;
+    }
+
+    .sorted-label {
+      margin-top: 20px;
+      padding: 14px 20px;
+      border-radius: 40px;
+      background: rgba(0, 180, 255, 0.06);
+      color: #8fcbff;
+      text-align: center;
+      font-weight: 500;
+      border: 1px dashed rgba(0, 180, 255, 0.2);
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 16px 22px;
+      border-radius: 30px;
+      background: rgba(0, 255, 180, 0.03);
+      border: 1px solid rgba(0, 255, 200, 0.15);
+      color: #b0f0d0;
+      backdrop-filter: blur(6px);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 22px;
+      margin-top: 10px;
+    }
+
+    .card {
+      background: rgba(0, 40, 70, 0.3);
+      backdrop-filter: blur(4px);
+      padding: 28px 18px;
+      text-align: center;
+      border-radius: 32px;
+      border: 1px solid rgba(0, 200, 255, 0.08);
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      background: rgba(0, 100, 180, 0.15);
+      transform: translateY(-6px);
+      border-color: rgba(0, 200, 255, 0.25);
+    }
+
+    .card h3 {
+      color: #8fd6ff;
+      font-weight: 500;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .card p {
+      color: #b6d0e5;
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 1300px;
+      text-align: center;
+      padding: 28px 20px;
+      margin: 40px auto 20px;
+      background: rgba(0, 10, 25, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 60px;
+      border: 1px solid rgba(0, 150, 255, 0.05);
+      color: #8bb4d0;
+      font-weight: 300;
+    }
+
+    footer p:first-child {
+      font-weight: 400;
+      color: #b0d6f5;
+    }
+
+    @media(max-width: 700px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        border-radius: 40px;
+        padding: 20px;
+      }
+      header h1 { font-size: 24px; }
+      .hero h2 { font-size: 34px; }
+      .section { padding: 24px 18px; }
+      .search-box input { width: 100%; }
+      button { width: 100%; }
+      .form-grid.passenger-grid .button-wrapper button {
+        width: 100%;
+        min-width: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1><i class="fas fa-plane-departure"></i> Smart Aviation</h1>
+  <p><i class="fas fa-code-branch"></i> Flight & Passenger · DSA</p>
+</header>
+
+<nav>
+  <a href="#home"><i class="fas fa-home"></i> Home</a>
+  <a href="#addFlight"><i class="fas fa-plus-circle"></i> Add Flight</a>
+  <a href="#flightSearch"><i class="fas fa-search"></i> Search Flight</a>
+  <a href="#addPassenger"><i class="fas fa-user-plus"></i> Add Passenger</a>
+  <a href="#passengerSearch"><i class="fas fa-user-search"></i> Search Passenger</a>
+  <a href="#records"><i class="fas fa-list-ul"></i> Records</a>
+  <a href="#dataStructures"><i class="fas fa-database"></i> Data Structures</a>
+</nav>
+
+<section class="hero" id="home">
+  <h2>Smart Aviation System</h2>
+  <p><i class="fas fa-rocket" style="margin-right:10px;"></i> Manage flights, passengers, check-in & status with Data Structures</p>
+</section>
+
+<div class="container">
+
+  <!-- ADD FLIGHT -->
+  <section class="section glass" id="addFlight">
+    <h2><i class="fas fa-plane"></i> Add Flight</h2>
+    <div class="form-grid">
+      <input type="text" id="flightNumber" placeholder="Flight e.g. AI001">
+      <input type="text" id="airline" placeholder="Airline">
+      <input type="text" id="fromCity" placeholder="From">
+      <input type="text" id="toCity" placeholder="To">
+
+      <div class="datetime-group">
+        <label><i class="far fa-calendar-alt"></i> Departure Date</label>
+        <input type="date" id="departureDate">
+      </div>
+      <div class="datetime-group">
+        <label><i class="far fa-clock"></i> Departure Time</label>
+        <div class="time-columns">
+          <select id="departureHour"><option value="">Hour</option></select>
+          <select id="departureMinute"><option value="">Min</option></select>
+        </div>
+      </div>
+
+      <div class="datetime-group">
+        <label><i class="far fa-calendar-alt"></i> Arrival Date</label>
+        <input type="date" id="arrivalDate">
+      </div>
+      <div class="datetime-group">
+        <label><i class="far fa-clock"></i> Arrival Time</label>
+        <div class="time-columns">
+          <select id="arrivalHour"><option value="">Hour</option></select>
+          <select id="arrivalMinute"><option value="">Min</option></select>
+        </div>
+      </div>
+
+      <input type="text" id="gate" placeholder="Gate">
+      <input type="text" id="terminal" placeholder="Terminal">
+      <select id="flightStatus">
+        <option value="Scheduled">Scheduled</option>
+        <option value="On Time">On Time</option>
+        <option value="Boarding">Boarding</option>
+        <option value="Delayed">Delayed</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+      <button onclick="addFlight()"><i class="fas fa-save"></i> Add Flight</button>
+    </div>
+    <div id="flightMessage"></div>
+  </section>
+
+  <!-- SEARCH FLIGHT -->
+  <section class="section glass" id="flightSearch">
+    <h2><i class="fas fa-search"></i> Search Flight</h2>
+    <div class="search-box">
+      <input type="text" id="searchFlightInput" placeholder="Enter Flight Number">
+      <button onclick="searchFlight()"><i class="fas fa-plane"></i> Search</button>
+    </div>
+    <div class="result" id="flightResult"></div>
+  </section>
+
+  <!-- ADD PASSENGER - with centered button -->
+  <section class="section glass" id="addPassenger">
+    <h2><i class="fas fa-user-plus"></i> Add Passenger</h2>
+    <div class="form-grid passenger-grid">
+      <input type="text" id="passengerName" placeholder="Passenger Name">
+      <input type="text" id="passengerFlight" placeholder="Flight Number">
+      <input type="text" id="passengerSeat" placeholder="Seat e.g. 18B">
+      <select id="passengerStatus">
+        <option value="Checked-In">Checked-In</option>
+        <option value="Not Checked-In">Not Checked-In</option>
+      </select>
+      <!-- Centered button wrapper -->
+      <div class="button-wrapper">
+        <button onclick="addPassenger()"><i class="fas fa-user-check"></i> Add Passenger</button>
+      </div>
+    </div>
+    <div id="passengerMessage"></div>
+  </section>
+
+  <!-- SEARCH PASSENGER -->
+  <section class="section glass" id="passengerSearch">
+    <h2><i class="fas fa-user-search"></i> Search Passenger</h2>
+    <div class="search-box">
+      <input type="text" id="searchPassengerInput" placeholder="Passenger ID e.g. P001">
+      <button onclick="searchPassenger()"><i class="fas fa-search"></i> Search</button>
+    </div>
+    <div class="result" id="passengerResult"></div>
+  </section>
+
+  <!-- RECORDS -->
+  <section class="section glass" id="records">
+    <h2><i class="fas fa-clipboard-list"></i> System Records</h2>
+    <div class="search-box" style="gap:20px;">
+      <button onclick="displayFlights()"><i class="fas fa-plane"></i> Display Flights</button>
+      <button onclick="displayPassengers()"><i class="fas fa-users"></i> Display Passengers</button>
+    </div>
+    <div id="recordsList"></div>
+  </section>
+
+  <!-- DATA STRUCTURES -->
+  <section class="section glass" id="dataStructures">
+    <h2><i class="fas fa-cubes"></i> Data Structures & Algorithms</h2>
+    <div class="cards">
+      <div class="card"><h3>Array</h3><p>Dynamic flight & passenger storage</p></div>
+      <div class="card"><h3>Searching</h3><p>Linear search by flight # / passenger ID</p></div>
+      <div class="card"><h3>Sorting</h3><p>Bubble sort by departure date+time</p></div>
+      <div class="card"><h3>Queue</h3><p>Check‑in / boarding order ready</p></div>
+      <div class="card"><h3>Linked List</h3><p>Dynamic passenger records</p></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p><i class="fas fa-plane"></i> Smart Aviation · Flight & Passenger Management</p>
+  <p style="font-size:14px; opacity:0.6;">Data Structures Mini Project · Engineering</p>
+</footer>
+
+<script>
+  // Populate hour & minute selects
+  (function createTimeOptions() {
+    const hourBoxes = [document.getElementById("departureHour"), document.getElementById("arrivalHour")];
+    const minuteBoxes = [document.getElementById("departureMinute"), document.getElementById("arrivalMinute")];
+    hourBoxes.forEach(box => {
+      for (let i = 0; i <= 23; i++) {
+        let val = String(i).padStart(2, "0");
+        let opt = document.createElement("option");
+        opt.value = val; opt.textContent = val;
+        box.appendChild(opt);
+      }
+    });
+    minuteBoxes.forEach(box => {
+      for (let i = 0; i <= 59; i++) {
+        let val = String(i).padStart(2, "0");
+        let opt = document.createElement("option");
+        opt.value = val; opt.textContent = val;
+        box.appendChild(opt);
+      }
+    });
+  })();
+
+  // DATA
+  let flights = [];
+  let passengers = [];
+  let passengerCounter = 1;
+
+  // HELPERS
+  function formatDate(date) {
+    if (!date) return "Not Provided";
+    let parts = date.split("-");
+    let d = new Date(parts[0], parts[1]-1, parts[2]);
+    return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+  }
+
+  function getDateTimeValue(date, time) {
+    if (!date || !time) return Number.MAX_SAFE_INTEGER;
+    return new Date(date + "T" + time).getTime();
+  }
+
+  function sortFlightsByDeparture() {
+    let sorted = [...flights];
+    for (let i = 0; i < sorted.length-1; i++) {
+      for (let j = 0; j < sorted.length-i-1; j++) {
+        let a = getDateTimeValue(sorted[j].departureDate, sorted[j].departureTime);
+        let b = getDateTimeValue(sorted[j+1].departureDate, sorted[j+1].departureTime);
+        if (a > b) { [sorted[j], sorted[j+1]] = [sorted[j+1], sorted[j]]; }
+      }
+    }
+    return sorted;
+  }
+
+  // ADD FLIGHT
+  function addFlight() {
+    let number = document.getElementById("flightNumber").value.trim().toUpperCase();
+    let airline = document.getElementById("airline").value.trim();
+    let from = document.getElementById("fromCity").value.trim();
+    let to = document.getElementById("toCity").value.trim();
+    let departureDate = document.getElementById("departureDate").value;
+    let departureHour = document.getElementById("departureHour").value;
+    let departureMinute = document.getElementById("departureMinute").value;
+    let arrivalDate = document.getElementById("arrivalDate").value;
+    let arrivalHour = document.getElementById("arrivalHour").value;
+    let arrivalMinute = document.getElementById("arrivalMinute").value;
+    let gate = document.getElementById("gate").value.trim();
+    let terminal = document.getElementById("terminal").value.trim();
+    let status = document.getElementById("flightStatus").value;
+
+    if (!number || !airline || !from || !to || !departureDate || !departureHour || !departureMinute || !arrivalDate || !arrivalHour || !arrivalMinute) {
+      alert("Please fill all flight, date & time fields.");
+      return;
+    }
+    let depTime = departureHour + ":" + departureMinute;
+    let arrTime = arrivalHour + ":" + arrivalMinute;
+    let depDateTime = new Date(departureDate + "T" + depTime);
+    let arrDateTime = new Date(arrivalDate + "T" + arrTime);
+    if (arrDateTime < depDateTime) { alert("Arrival cannot be before departure."); return; }
+    if (flights.find(f => f.number === number)) { alert("Flight " + number + " already exists."); return; }
+
+    flights.push({ number, airline, from, to, departureDate, departureTime: depTime, arrivalDate, arrivalTime: arrTime, gate, terminal, status });
+    document.getElementById("flightMessage").innerHTML =
+      `<div class="message"><i class="fas fa-check-circle" style="color:#00d4ff;"></i> Flight <strong>${number}</strong> added. Departure: ${formatDate(departureDate)} ${depTime} · Arrival: ${formatDate(arrivalDate)} ${arrTime}</div>`;
+    // reset fields
+    ["flightNumber","airline","fromCity","toCity","departureDate","departureHour","departureMinute","arrivalDate","arrivalHour","arrivalMinute","gate","terminal"].forEach(id => document.getElementById(id).value = "");
+  }
+
+  // SEARCH FLIGHT
+  function searchFlight() {
+    let input = document.getElementById("searchFlightInput").value.trim().toUpperCase();
+    let result = document.getElementById("flightResult");
+    if (!input) { alert("Enter Flight Number."); return; }
+    let flight = flights.find(f => f.number === input);
+    result.style.display = "block";
+    if (flight) {
+      result.innerHTML = `<h3><i class="fas fa-check-circle" style="color:#2ecc71;"></i> Flight Found</h3>
+        <p><strong>Flight:</strong> ${flight.number}</p>
+        <p><strong>Airline:</strong> ${flight.airline}</p>
+        <p><strong>Route:</strong> ${flight.from} → ${flight.to}</p>
+        <p><strong>Departure:</strong> ${formatDate(flight.departureDate)} ${flight.departureTime}</p>
+        <p><strong>Arrival:</strong> ${formatDate(flight.arrivalDate)} ${flight.arrivalTime}</p>
+        <p><strong>Gate:</strong> ${flight.gate || "Not Assigned"}</p>
+        <p><strong>Terminal:</strong> ${flight.terminal || "Not Assigned"}</p>
+        <p><strong>Status:</strong> <span class="status">${flight.status}</span></p>`;
+    } else {
+      result.innerHTML = `<h3><i class="fas fa-times-circle" style="color:#e67e22;"></i> Flight Not Found</h3><p>No flight with number <strong>${input}</strong>.</p>`;
+    }
+  }
+
+  // ADD PASSENGER
+  function addPassenger() {
+    let name = document.getElementById("passengerName").value.trim();
+    let flightNumber = document.getElementById("passengerFlight").value.trim().toUpperCase();
+    let seat = document.getElementById("passengerSeat").value.trim().toUpperCase();
+    let status = document.getElementById("passengerStatus").value;
+    if (!name || !flightNumber || !seat) { alert("Please fill all passenger fields."); return; }
+    // auto create flight if missing
+    if (!flights.find(f => f.number === flightNumber)) {
+      flights.push({ number: flightNumber, airline: "Not Provided", from: "Not Provided", to: "Not Provided", departureDate: "", departureTime: "", arrivalDate: "", arrivalTime: "", gate: "Not Assigned", terminal: "Not Assigned", status: "Scheduled" });
+    }
+    let passengerID = "P" + String(passengerCounter).padStart(3, "0");
+    passengers.push({ id: passengerID, name, flight: flightNumber, seat, status });
+    passengerCounter++;
+    document.getElementById("passengerMessage").innerHTML =
+      `<div class="message"><i class="fas fa-user-check" style="color:#2ecc71;"></i> Passenger <strong>${name}</strong> added · ID: ${passengerID} · Flight: ${flightNumber}</div>`;
+    document.getElementById("passengerName").value = "";
+    document.getElementById("passengerFlight").value = "";
+    document.getElementById("passengerSeat").value = "";
+  }
+
+  // SEARCH PASSENGER
+  function searchPassenger() {
+    let input = document.getElementById("searchPassengerInput").value.trim().toUpperCase();
+    let result = document.getElementById("passengerResult");
+    if (!input) { alert("Enter Passenger ID."); return; }
+    let passenger = passengers.find(p => p.id === input);
+    result.style.display = "block";
+    if (passenger) {
+      result.innerHTML = `<h3><i class="fas fa-user-circle" style="color:#2ecc71;"></i> Passenger Found</h3>
+        <p><strong>ID:</strong> ${passenger.id}</p>
+        <p><strong>Name:</strong> ${passenger.name}</p>
+        <p><strong>Flight:</strong> ${passenger.flight}</p>
+        <p><strong>Seat:</strong> ${passenger.seat}</p>
+        <p><strong>Status:</strong> ${passenger.status}</p>`;
+    } else {
+      result.innerHTML = `<h3><i class="fas fa-user-slash" style="color:#e67e22;"></i> Not Found</h3><p>No passenger with ID <strong>${input}</strong>.</p>`;
+    }
+  }
+
+  // DISPLAY FLIGHTS
+  function displayFlights() {
+    let records = document.getElementById("recordsList");
+    if (!flights.length) {
+      records.innerHTML = `<div class="result" style="display:block;"><h3>No Flights</h3><p>Add a flight first.</p></div>`;
+      return;
+    }
+    let sorted = sortFlightsByDeparture();
+    let output = `<div class="sorted-label"><i class="fas fa-sort-amount-up"></i> Flights sorted by earliest departure</div>
+      <h3 style="color:#9edcff;margin-top:24px;"><i class="fas fa-plane"></i> All Flights (Earliest first)</h3>`;
+    sorted.forEach((f, i) => {
+      output += `<div class="record-card">
+        <h3>${i+1}. ${f.number}</h3>
+        <p><strong>Airline:</strong> ${f.airline}</p>
+        <p><strong>Route:</strong> ${f.from} → ${f.to}</p>
+        <p><strong>Departure:</strong> ${formatDate(f.departureDate)} ${f.departureTime || "Not Provided"}</p>
+        <p><strong>Arrival:</strong> ${formatDate(f.arrivalDate)} ${f.arrivalTime || "Not Provided"}</p>
+        <p><strong>Gate:</strong> ${f.gate || "Not Assigned"} · <strong>Terminal:</strong> ${f.terminal || "Not Assigned"}</p>
+        <p><strong>Status:</strong> <span class="status">${f.status}</span></p>
+      </div>`;
+    });
+    records.innerHTML = output;
+  }
+
+  // DISPLAY PASSENGERS
+  function displayPassengers() {
+    let records = document.getElementById("recordsList");
+    if (!passengers.length) {
+      records.innerHTML = `<div class="result" style="display:block;"><h3>No Passengers</h3><p>Add a passenger first.</p></div>`;
+      return;
+    }
+    let output = `<h3 style="color:#9edcff;margin-top:24px;"><i class="fas fa-users"></i> All Passengers</h3>`;
+    passengers.forEach(p => {
+      output += `<div class="record-card">
+        <h3>${p.id}</h3>
+        <p><strong>Name:</strong> ${p.name}</p>
+        <p><strong>Flight:</strong> ${p.flight}</p>
+        <p><strong>Seat:</strong> ${p.seat}</p>
+        <p><strong>Status:</strong> ${p.status}</p>
+      </div>`;
+    });
+    records.innerHTML = output;
+  }
+</script>
+
+</body>
+</html>
