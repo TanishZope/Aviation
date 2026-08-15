@@ -24,7 +24,6 @@
       align-items: center;
     }
 
-    /* GLASS CARD BASE */
     .glass {
       background: rgba(10, 30, 50, 0.55);
       backdrop-filter: blur(12px);
@@ -184,14 +183,63 @@
       font-size: 30px;
     }
 
-    .form-grid {
+    /* ===== ADD FLIGHT - CUSTOM ROW LAYOUT ===== */
+    .flight-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .flight-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 18px;
       align-items: end;
     }
 
-    /* passenger grid with equal columns and centered button */
+    .flight-row.row-1 {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .flight-row.row-2 {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .flight-row.row-3 {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .flight-row.row-4 {
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .flight-row.row-4 button {
+      min-width: 220px;
+      padding: 14px 40px;
+    }
+
+    .datetime-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .datetime-group label {
+      color: #7fc9ff;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      margin-left: 6px;
+    }
+
+    .time-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* ===== PASSENGER GRID ===== */
     .form-grid.passenger-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -226,30 +274,14 @@
       backdrop-filter: blur(4px);
     }
 
-    /* Force black text on select options (time dropdowns) */
-    select option {
-      background: #1a2a3a;
-      color: #000000 !important;
-      font-weight: 500;
-    }
-
-    /* Override for select elements to have black text when dropdown is open */
-    select:focus option,
-    select option:hover {
-      background: #e8f0fe;
-      color: #000000 !important;
-    }
-
-    /* Ensure the select text is white when closed, but options are black */
-    select {
-      color: #ffffff;
-    }
-
-    /* For the dropdown arrow and overall select styling */
     select option {
       background: #f0f5fa;
       color: #000000 !important;
       padding: 8px;
+    }
+
+    select {
+      color: #ffffff;
     }
 
     input:focus, select:focus {
@@ -261,26 +293,6 @@
     input::placeholder {
       color: #9bbad3;
       font-weight: 300;
-    }
-
-    .datetime-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .datetime-group label {
-      color: #7fc9ff;
-      font-weight: 500;
-      font-size: 14px;
-      letter-spacing: 0.3px;
-      margin-left: 6px;
-    }
-
-    .time-columns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
     }
 
     button {
@@ -464,8 +476,13 @@
       color: #b0d6f5;
     }
 
-    /* Responsive: stack passenger fields on smaller screens */
+    /* ===== RESPONSIVE ===== */
     @media(max-width: 1024px) {
+      .flight-row.row-1,
+      .flight-row.row-2,
+      .flight-row.row-3 {
+        grid-template-columns: repeat(2, 1fr);
+      }
       .form-grid.passenger-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -484,10 +501,20 @@
       .section { padding: 24px 18px; }
       .search-box input { width: 100%; }
       button { width: 100%; }
+      
+      .flight-row.row-1,
+      .flight-row.row-2,
+      .flight-row.row-3 {
+        grid-template-columns: 1fr;
+      }
       .form-grid.passenger-grid {
         grid-template-columns: 1fr;
       }
       .form-grid.passenger-grid .button-wrapper button {
+        width: 100%;
+        min-width: unset;
+      }
+      .flight-row.row-4 button {
         width: 100%;
         min-width: unset;
       }
@@ -518,50 +545,65 @@
 
 <div class="container">
 
-  <!-- ADD FLIGHT -->
+  <!-- ========== ADD FLIGHT - NEW ROW LAYOUT ========== -->
   <section class="section glass" id="addFlight">
     <h2><i class="fas fa-plane"></i> Add Flight</h2>
-    <div class="form-grid">
-      <input type="text" id="flightNumber" placeholder="Flight e.g. AI001">
-      <input type="text" id="airline" placeholder="Airline">
-      <input type="text" id="fromCity" placeholder="From">
-      <input type="text" id="toCity" placeholder="To">
-
-      <div class="datetime-group">
-        <label><i class="far fa-calendar-alt"></i> Departure Date</label>
-        <input type="date" id="departureDate">
+    
+    <div class="flight-form">
+      <!-- ROW 1: Flight Number, Airline, From, To -->
+      <div class="flight-row row-1">
+        <input type="text" id="flightNumber" placeholder="Flight e.g. AI001">
+        <input type="text" id="airline" placeholder="Airline">
+        <input type="text" id="fromCity" placeholder="From">
+        <input type="text" id="toCity" placeholder="To">
       </div>
-      <div class="datetime-group">
-        <label><i class="far fa-clock"></i> Departure Time</label>
-        <div class="time-columns">
-          <select id="departureHour"><option value="">Hour</option></select>
-          <select id="departureMinute"><option value="">Min</option></select>
+
+      <!-- ROW 2: Departure Date + Time, Arrival Date + Time -->
+      <div class="flight-row row-2">
+        <div class="datetime-group">
+          <label><i class="far fa-calendar-alt"></i> Departure Date</label>
+          <input type="date" id="departureDate">
+        </div>
+        <div class="datetime-group">
+          <label><i class="far fa-clock"></i> Departure Time</label>
+          <div class="time-columns">
+            <select id="departureHour"><option value="">Hour</option></select>
+            <select id="departureMinute"><option value="">Min</option></select>
+          </div>
+        </div>
+        <div class="datetime-group">
+          <label><i class="far fa-calendar-alt"></i> Arrival Date</label>
+          <input type="date" id="arrivalDate">
+        </div>
+        <div class="datetime-group">
+          <label><i class="far fa-clock"></i> Arrival Time</label>
+          <div class="time-columns">
+            <select id="arrivalHour"><option value="">Hour</option></select>
+            <select id="arrivalMinute"><option value="">Min</option></select>
+          </div>
         </div>
       </div>
 
-      <div class="datetime-group">
-        <label><i class="far fa-calendar-alt"></i> Arrival Date</label>
-        <input type="date" id="arrivalDate">
-      </div>
-      <div class="datetime-group">
-        <label><i class="far fa-clock"></i> Arrival Time</label>
-        <div class="time-columns">
-          <select id="arrivalHour"><option value="">Hour</option></select>
-          <select id="arrivalMinute"><option value="">Min</option></select>
-        </div>
+      <!-- ROW 3: Gate, Terminal, Status -->
+      <div class="flight-row row-3">
+        <input type="text" id="gate" placeholder="Gate">
+        <input type="text" id="terminal" placeholder="Terminal">
+        <select id="flightStatus">
+          <option value="Scheduled">Scheduled</option>
+          <option value="On Time">On Time</option>
+          <option value="Boarding">Boarding</option>
+          <option value="Delayed">Delayed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+        <div></div> <!-- Empty spacer for alignment -->
       </div>
 
-      <input type="text" id="gate" placeholder="Gate">
-      <input type="text" id="terminal" placeholder="Terminal">
-      <select id="flightStatus">
-        <option value="Scheduled">Scheduled</option>
-        <option value="On Time">On Time</option>
-        <option value="Boarding">Boarding</option>
-        <option value="Delayed">Delayed</option>
-        <option value="Cancelled">Cancelled</option>
-      </select>
-      <button onclick="addFlight()"><i class="fas fa-save"></i> Add Flight</button>
+      <!-- ROW 4: Centered Add Flight Button -->
+      <div class="flight-row row-4">
+        <button onclick="addFlight()"><i class="fas fa-save"></i> Add Flight</button>
+      </div>
     </div>
+
     <div id="flightMessage"></div>
   </section>
 
@@ -575,7 +617,7 @@
     <div class="result" id="flightResult"></div>
   </section>
 
-  <!-- ADD PASSENGER - with equal 4-column grid and centered button -->
+  <!-- ADD PASSENGER -->
   <section class="section glass" id="addPassenger">
     <h2><i class="fas fa-user-plus"></i> Add Passenger</h2>
     <div class="form-grid passenger-grid">
@@ -586,7 +628,6 @@
         <option value="Checked-In">Checked-In</option>
         <option value="Not Checked-In">Not Checked-In</option>
       </select>
-      <!-- Centered button wrapper spanning full width -->
       <div class="button-wrapper">
         <button onclick="addPassenger()"><i class="fas fa-user-check"></i> Add Passenger</button>
       </div>
@@ -645,7 +686,6 @@
         let opt = document.createElement("option");
         opt.value = val;
         opt.textContent = val;
-        // Force black text on options
         opt.style.color = "#000000";
         opt.style.backgroundColor = "#f0f5fa";
         box.appendChild(opt);
@@ -658,7 +698,6 @@
         let opt = document.createElement("option");
         opt.value = val;
         opt.textContent = val;
-        // Force black text on options
         opt.style.color = "#000000";
         opt.style.backgroundColor = "#f0f5fa";
         box.appendChild(opt);
@@ -759,7 +798,6 @@
     let seat = document.getElementById("passengerSeat").value.trim().toUpperCase();
     let status = document.getElementById("passengerStatus").value;
     if (!name || !flightNumber || !seat) { alert("Please fill all passenger fields."); return; }
-    // auto create flight if missing
     if (!flights.find(f => f.number === flightNumber)) {
       flights.push({ number: flightNumber, airline: "Not Provided", from: "Not Provided", to: "Not Provided", departureDate: "", departureTime: "", arrivalDate: "", arrivalTime: "", gate: "Not Assigned", terminal: "Not Assigned", status: "Scheduled" });
     }
@@ -817,25 +855,3 @@
   }
 
   // DISPLAY PASSENGERS
-  function displayPassengers() {
-    let records = document.getElementById("recordsList");
-    if (!passengers.length) {
-      records.innerHTML = `<div class="result" style="display:block;"><h3>No Passengers</h3><p>Add a passenger first.</p></div>`;
-      return;
-    }
-    let output = `<h3 style="color:#9edcff;margin-top:24px;"><i class="fas fa-users"></i> All Passengers</h3>`;
-    passengers.forEach(p => {
-      output += `<div class="record-card">
-        <h3>${p.id}</h3>
-        <p><strong>Name:</strong> ${p.name}</p>
-        <p><strong>Flight:</strong> ${p.flight}</p>
-        <p><strong>Seat:</strong> ${p.seat}</p>
-        <p><strong>Status:</strong> ${p.status}</p>
-      </div>`;
-    });
-    records.innerHTML = output;
-  }
-</script>
-
-</body>
-</html>
