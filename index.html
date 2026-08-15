@@ -223,6 +223,32 @@
       backdrop-filter: blur(4px);
     }
 
+    /* Force black text on select options (time dropdowns) */
+    select option {
+      background: #1a2a3a;
+      color: #000000 !important;
+      font-weight: 500;
+    }
+
+    /* Override for select elements to have black text when dropdown is open */
+    select:focus option,
+    select option:hover {
+      background: #e8f0fe;
+      color: #000000 !important;
+    }
+
+    /* Ensure the select text is white when closed, but options are black */
+    select {
+      color: #ffffff;
+    }
+
+    /* For the dropdown arrow and overall select styling */
+    select option {
+      background: #f0f5fa;
+      color: #000000 !important;
+      padding: 8px;
+    }
+
     input:focus, select:focus {
       border-color: #00bfff;
       background: rgba(0, 150, 255, 0.08);
@@ -595,23 +621,33 @@
 </footer>
 
 <script>
-  // Populate hour & minute selects
+  // Populate hour & minute selects with black text option
   (function createTimeOptions() {
     const hourBoxes = [document.getElementById("departureHour"), document.getElementById("arrivalHour")];
     const minuteBoxes = [document.getElementById("departureMinute"), document.getElementById("arrivalMinute")];
+    
     hourBoxes.forEach(box => {
       for (let i = 0; i <= 23; i++) {
         let val = String(i).padStart(2, "0");
         let opt = document.createElement("option");
-        opt.value = val; opt.textContent = val;
+        opt.value = val;
+        opt.textContent = val;
+        // Force black text on options
+        opt.style.color = "#000000";
+        opt.style.backgroundColor = "#f0f5fa";
         box.appendChild(opt);
       }
     });
+    
     minuteBoxes.forEach(box => {
       for (let i = 0; i <= 59; i++) {
         let val = String(i).padStart(2, "0");
         let opt = document.createElement("option");
-        opt.value = val; opt.textContent = val;
+        opt.value = val;
+        opt.textContent = val;
+        // Force black text on options
+        opt.style.color = "#000000";
+        opt.style.backgroundColor = "#f0f5fa";
         box.appendChild(opt);
       }
     });
