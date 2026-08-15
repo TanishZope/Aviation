@@ -191,9 +191,12 @@
       align-items: end;
     }
 
-    /* special: passenger grid with centered button */
+    /* passenger grid with equal columns and centered button */
     .form-grid.passenger-grid {
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      align-items: end;
     }
 
     .form-grid.passenger-grid .button-wrapper {
@@ -461,6 +464,13 @@
       color: #b0d6f5;
     }
 
+    /* Responsive: stack passenger fields on smaller screens */
+    @media(max-width: 1024px) {
+      .form-grid.passenger-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     @media(max-width: 700px) {
       header {
         flex-direction: column;
@@ -474,6 +484,9 @@
       .section { padding: 24px 18px; }
       .search-box input { width: 100%; }
       button { width: 100%; }
+      .form-grid.passenger-grid {
+        grid-template-columns: 1fr;
+      }
       .form-grid.passenger-grid .button-wrapper button {
         width: 100%;
         min-width: unset;
@@ -562,7 +575,7 @@
     <div class="result" id="flightResult"></div>
   </section>
 
-  <!-- ADD PASSENGER - with centered button -->
+  <!-- ADD PASSENGER - with equal 4-column grid and centered button -->
   <section class="section glass" id="addPassenger">
     <h2><i class="fas fa-user-plus"></i> Add Passenger</h2>
     <div class="form-grid passenger-grid">
@@ -573,7 +586,7 @@
         <option value="Checked-In">Checked-In</option>
         <option value="Not Checked-In">Not Checked-In</option>
       </select>
-      <!-- Centered button wrapper -->
+      <!-- Centered button wrapper spanning full width -->
       <div class="button-wrapper">
         <button onclick="addPassenger()"><i class="fas fa-user-check"></i> Add Passenger</button>
       </div>
