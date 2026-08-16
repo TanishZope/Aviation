@@ -183,7 +183,7 @@
       font-size: 30px;
     }
 
-    /* ===== ADD FLIGHT - CUSTOM ROW LAYOUT ===== */
+    /* ===== ADD FLIGHT - ROW LAYOUT ===== */
     .flight-form {
       display: flex;
       flex-direction: column;
@@ -545,7 +545,7 @@
 
 <div class="container">
 
-  <!-- ========== ADD FLIGHT - NEW ROW LAYOUT ========== -->
+  <!-- ========== ADD FLIGHT ========== -->
   <section class="section glass" id="addFlight">
     <h2><i class="fas fa-plane"></i> Add Flight</h2>
     
@@ -584,7 +584,7 @@
         </div>
       </div>
 
-      <!-- ROW 3: Gate, Terminal, Status -->
+      <!-- ROW 3: Gate, Terminal, Status (with spacer) -->
       <div class="flight-row row-3">
         <input type="text" id="gate" placeholder="Gate">
         <input type="text" id="terminal" placeholder="Terminal">
@@ -595,7 +595,7 @@
           <option value="Delayed">Delayed</option>
           <option value="Cancelled">Cancelled</option>
         </select>
-        <div></div> <!-- Empty spacer for alignment -->
+        <div></div> <!-- empty spacer -->
       </div>
 
       <!-- ROW 4: Centered Add Flight Button -->
@@ -675,183 +675,297 @@
 </footer>
 
 <script>
-  // Populate hour & minute selects with black text option
-  (function createTimeOptions() {
-    const hourBoxes = [document.getElementById("departureHour"), document.getElementById("arrivalHour")];
-    const minuteBoxes = [document.getElementById("departureMinute"), document.getElementById("arrivalMinute")];
-    
-    hourBoxes.forEach(box => {
+  // ============================================================
+  // POPULATE HOUR (00–23) AND MINUTE (00–59) DROPDOWNS
+  // ============================================================
+  (function populateTimeDropdowns() {
+    const hourSelectors = ['departureHour', 'arrivalHour'];
+    const minuteSelectors = ['departureMinute', 'arrivalMinute'];
+
+    hourSelectors.forEach(id => {
+      const select = document.getElementById(id);
+      if (!select) return;
+      // Keep the default "Hour" option as the first child
       for (let i = 0; i <= 23; i++) {
-        let val = String(i).padStart(2, "0");
-        let opt = document.createElement("option");
+        const val = String(i).padStart(2, '0');
+        const opt = document.createElement('option');
         opt.value = val;
         opt.textContent = val;
-        opt.style.color = "#000000";
-        opt.style.backgroundColor = "#f0f5fa";
-        box.appendChild(opt);
+        opt.style.color = '#000000';
+        opt.style.backgroundColor = '#f0f5fa';
+        select.appendChild(opt);
       }
     });
-    
-    minuteBoxes.forEach(box => {
+
+    minuteSelectors.forEach(id => {
+      const select = document.getElementById(id);
+      if (!select) return;
+      // Keep the default "Min" option as the first child
       for (let i = 0; i <= 59; i++) {
-        let val = String(i).padStart(2, "0");
-        let opt = document.createElement("option");
+        const val = String(i).padStart(2, '0');
+        const opt = document.createElement('option');
         opt.value = val;
         opt.textContent = val;
-        opt.style.color = "#000000";
-        opt.style.backgroundColor = "#f0f5fa";
-        box.appendChild(opt);
+        opt.style.color = '#000000';
+        opt.style.backgroundColor = '#f0f5fa';
+        select.appendChild(opt);
       }
     });
   })();
 
-  // DATA
+  // ============================================================
+  // DATA STORE
+  // ============================================================
   let flights = [];
   let passengers = [];
   let passengerCounter = 1;
 
+  // ============================================================
   // HELPERS
+  // ============================================================
   function formatDate(date) {
-    if (!date) return "Not Provided";
-    let parts = date.split("-");
-    let d = new Date(parts[0], parts[1]-1, parts[2]);
-    return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+    if (!date) return 'Not Provided';
+    const parts = date.split('-');
+    const d = new Date(parts[0], parts[1] - 1, parts[2]);
+    return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
   }
 
   function getDateTimeValue(date, time) {
     if (!date || !time) return Number.MAX_SAFE_INTEGER;
-    return new Date(date + "T" + time).getTime();
+    return new Date(date + 'T' + time).getTime();
   }
 
   function sortFlightsByDeparture() {
-    let sorted = [...flights];
-    for (let i = 0; i < sorted.length-1; i++) {
-      for (let j = 0; j < sorted.length-i-1; j++) {
-        let a = getDateTimeValue(sorted[j].departureDate, sorted[j].departureTime);
-        let b = getDateTimeValue(sorted[j+1].departureDate, sorted[j+1].departureTime);
-        if (a > b) { [sorted[j], sorted[j+1]] = [sorted[j+1], sorted[j]]; }
+    const sorted = [...flights];
+    for (let i = 0; i < sorted.length - 1; i++) {
+      for (let j = 0; j < sorted.length - i - 1; j++) {
+        const a = getDateTimeValue(sorted[j].departureDate, sorted[j].departureTime);
+        const b = getDateTimeValue(sorted[j + 1].departureDate, sorted[j + 1].departureTime);
+        if (a > b) {
+          [sorted[j], sorted[j + 1]] = [sorted[j + 1], sorted[j]];
+        }
       }
     }
     return sorted;
   }
 
+  // ============================================================
   // ADD FLIGHT
+  // ============================================================
   function addFlight() {
-    let number = document.getElementById("flightNumber").value.trim().toUpperCase();
-    let airline = document.getElementById("airline").value.trim();
-    let from = document.getElementById("fromCity").value.trim();
-    let to = document.getElementById("toCity").value.trim();
-    let departureDate = document.getElementById("departureDate").value;
-    let departureHour = document.getElementById("departureHour").value;
-    let departureMinute = document.getElementById("departureMinute").value;
-    let arrivalDate = document.getElementById("arrivalDate").value;
-    let arrivalHour = document.getElementById("arrivalHour").value;
-    let arrivalMinute = document.getElementById("arrivalMinute").value;
-    let gate = document.getElementById("gate").value.trim();
-    let terminal = document.getElementById("terminal").value.trim();
-    let status = document.getElementById("flightStatus").value;
+    const number = document.getElementById('flightNumber').value.trim().toUpperCase();
+    const airline = document.getElementById('airline').value.trim();
+    const from = document.getElementById('fromCity').value.trim();
+    const to = document.getElementById('toCity').value.trim();
+    const departureDate = document.getElementById('departureDate').value;
+    const departureHour = document.getElementById('departureHour').value;
+    const departureMinute = document.getElementById('departureMinute').value;
+    const arrivalDate = document.getElementById('arrivalDate').value;
+    const arrivalHour = document.getElementById('arrivalHour').value;
+    const arrivalMinute = document.getElementById('arrivalMinute').value;
+    const gate = document.getElementById('gate').value.trim();
+    const terminal = document.getElementById('terminal').value.trim();
+    const status = document.getElementById('flightStatus').value;
 
     if (!number || !airline || !from || !to || !departureDate || !departureHour || !departureMinute || !arrivalDate || !arrivalHour || !arrivalMinute) {
-      alert("Please fill all flight, date & time fields.");
+      alert('Please fill all flight, date & time fields.');
       return;
     }
-    let depTime = departureHour + ":" + departureMinute;
-    let arrTime = arrivalHour + ":" + arrivalMinute;
-    let depDateTime = new Date(departureDate + "T" + depTime);
-    let arrDateTime = new Date(arrivalDate + "T" + arrTime);
-    if (arrDateTime < depDateTime) { alert("Arrival cannot be before departure."); return; }
-    if (flights.find(f => f.number === number)) { alert("Flight " + number + " already exists."); return; }
 
-    flights.push({ number, airline, from, to, departureDate, departureTime: depTime, arrivalDate, arrivalTime: arrTime, gate, terminal, status });
-    document.getElementById("flightMessage").innerHTML =
+    const depTime = departureHour + ':' + departureMinute;
+    const arrTime = arrivalHour + ':' + arrivalMinute;
+    const depDateTime = new Date(departureDate + 'T' + depTime);
+    const arrDateTime = new Date(arrivalDate + 'T' + arrTime);
+
+    if (arrDateTime < depDateTime) {
+      alert('Arrival cannot be before departure.');
+      return;
+    }
+
+    if (flights.find(f => f.number === number)) {
+      alert('Flight ' + number + ' already exists.');
+      return;
+    }
+
+    flights.push({
+      number,
+      airline,
+      from,
+      to,
+      departureDate,
+      departureTime: depTime,
+      arrivalDate,
+      arrivalTime: arrTime,
+      gate,
+      terminal,
+      status
+    });
+
+    document.getElementById('flightMessage').innerHTML =
       `<div class="message"><i class="fas fa-check-circle" style="color:#00d4ff;"></i> Flight <strong>${number}</strong> added. Departure: ${formatDate(departureDate)} ${depTime} · Arrival: ${formatDate(arrivalDate)} ${arrTime}</div>`;
-    // reset fields
-    ["flightNumber","airline","fromCity","toCity","departureDate","departureHour","departureMinute","arrivalDate","arrivalHour","arrivalMinute","gate","terminal"].forEach(id => document.getElementById(id).value = "");
+
+    // Reset fields
+    ['flightNumber', 'airline', 'fromCity', 'toCity', 'departureDate', 'departureHour', 'departureMinute', 'arrivalDate', 'arrivalHour', 'arrivalMinute', 'gate', 'terminal'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    // Reset status to default
+    document.getElementById('flightStatus').value = 'Scheduled';
   }
 
+  // ============================================================
   // SEARCH FLIGHT
+  // ============================================================
   function searchFlight() {
-    let input = document.getElementById("searchFlightInput").value.trim().toUpperCase();
-    let result = document.getElementById("flightResult");
-    if (!input) { alert("Enter Flight Number."); return; }
-    let flight = flights.find(f => f.number === input);
-    result.style.display = "block";
+    const input = document.getElementById('searchFlightInput').value.trim().toUpperCase();
+    const result = document.getElementById('flightResult');
+    if (!input) { alert('Enter Flight Number.'); return; }
+
+    const flight = flights.find(f => f.number === input);
+    result.style.display = 'block';
+
     if (flight) {
-      result.innerHTML = `<h3><i class="fas fa-check-circle" style="color:#2ecc71;"></i> Flight Found</h3>
+      result.innerHTML = `
+        <h3><i class="fas fa-check-circle" style="color:#2ecc71;"></i> Flight Found</h3>
         <p><strong>Flight:</strong> ${flight.number}</p>
         <p><strong>Airline:</strong> ${flight.airline}</p>
         <p><strong>Route:</strong> ${flight.from} → ${flight.to}</p>
         <p><strong>Departure:</strong> ${formatDate(flight.departureDate)} ${flight.departureTime}</p>
         <p><strong>Arrival:</strong> ${formatDate(flight.arrivalDate)} ${flight.arrivalTime}</p>
-        <p><strong>Gate:</strong> ${flight.gate || "Not Assigned"}</p>
-        <p><strong>Terminal:</strong> ${flight.terminal || "Not Assigned"}</p>
-        <p><strong>Status:</strong> <span class="status">${flight.status}</span></p>`;
+        <p><strong>Gate:</strong> ${flight.gate || 'Not Assigned'}</p>
+        <p><strong>Terminal:</strong> ${flight.terminal || 'Not Assigned'}</p>
+        <p><strong>Status:</strong> <span class="status">${flight.status}</span></p>
+      `;
     } else {
       result.innerHTML = `<h3><i class="fas fa-times-circle" style="color:#e67e22;"></i> Flight Not Found</h3><p>No flight with number <strong>${input}</strong>.</p>`;
     }
   }
 
+  // ============================================================
   // ADD PASSENGER
+  // ============================================================
   function addPassenger() {
-    let name = document.getElementById("passengerName").value.trim();
-    let flightNumber = document.getElementById("passengerFlight").value.trim().toUpperCase();
-    let seat = document.getElementById("passengerSeat").value.trim().toUpperCase();
-    let status = document.getElementById("passengerStatus").value;
-    if (!name || !flightNumber || !seat) { alert("Please fill all passenger fields."); return; }
-    if (!flights.find(f => f.number === flightNumber)) {
-      flights.push({ number: flightNumber, airline: "Not Provided", from: "Not Provided", to: "Not Provided", departureDate: "", departureTime: "", arrivalDate: "", arrivalTime: "", gate: "Not Assigned", terminal: "Not Assigned", status: "Scheduled" });
+    const name = document.getElementById('passengerName').value.trim();
+    const flightNumber = document.getElementById('passengerFlight').value.trim().toUpperCase();
+    const seat = document.getElementById('passengerSeat').value.trim().toUpperCase();
+    const status = document.getElementById('passengerStatus').value;
+
+    if (!name || !flightNumber || !seat) {
+      alert('Please fill all passenger fields.');
+      return;
     }
-    let passengerID = "P" + String(passengerCounter).padStart(3, "0");
+
+    // Auto-create flight if missing
+    if (!flights.find(f => f.number === flightNumber)) {
+      flights.push({
+        number: flightNumber,
+        airline: 'Not Provided',
+        from: 'Not Provided',
+        to: 'Not Provided',
+        departureDate: '',
+        departureTime: '',
+        arrivalDate: '',
+        arrivalTime: '',
+        gate: 'Not Assigned',
+        terminal: 'Not Assigned',
+        status: 'Scheduled'
+      });
+    }
+
+    const passengerID = 'P' + String(passengerCounter).padStart(3, '0');
     passengers.push({ id: passengerID, name, flight: flightNumber, seat, status });
     passengerCounter++;
-    document.getElementById("passengerMessage").innerHTML =
+
+    document.getElementById('passengerMessage').innerHTML =
       `<div class="message"><i class="fas fa-user-check" style="color:#2ecc71;"></i> Passenger <strong>${name}</strong> added · ID: ${passengerID} · Flight: ${flightNumber}</div>`;
-    document.getElementById("passengerName").value = "";
-    document.getElementById("passengerFlight").value = "";
-    document.getElementById("passengerSeat").value = "";
+
+    document.getElementById('passengerName').value = '';
+    document.getElementById('passengerFlight').value = '';
+    document.getElementById('passengerSeat').value = '';
   }
 
+  // ============================================================
   // SEARCH PASSENGER
+  // ============================================================
   function searchPassenger() {
-    let input = document.getElementById("searchPassengerInput").value.trim().toUpperCase();
-    let result = document.getElementById("passengerResult");
-    if (!input) { alert("Enter Passenger ID."); return; }
-    let passenger = passengers.find(p => p.id === input);
-    result.style.display = "block";
+    const input = document.getElementById('searchPassengerInput').value.trim().toUpperCase();
+    const result = document.getElementById('passengerResult');
+    if (!input) { alert('Enter Passenger ID.'); return; }
+
+    const passenger = passengers.find(p => p.id === input);
+    result.style.display = 'block';
+
     if (passenger) {
-      result.innerHTML = `<h3><i class="fas fa-user-circle" style="color:#2ecc71;"></i> Passenger Found</h3>
+      result.innerHTML = `
+        <h3><i class="fas fa-user-circle" style="color:#2ecc71;"></i> Passenger Found</h3>
         <p><strong>ID:</strong> ${passenger.id}</p>
         <p><strong>Name:</strong> ${passenger.name}</p>
         <p><strong>Flight:</strong> ${passenger.flight}</p>
         <p><strong>Seat:</strong> ${passenger.seat}</p>
-        <p><strong>Status:</strong> ${passenger.status}</p>`;
+        <p><strong>Status:</strong> ${passenger.status}</p>
+      `;
     } else {
       result.innerHTML = `<h3><i class="fas fa-user-slash" style="color:#e67e22;"></i> Not Found</h3><p>No passenger with ID <strong>${input}</strong>.</p>`;
     }
   }
 
+  // ============================================================
   // DISPLAY FLIGHTS
+  // ============================================================
   function displayFlights() {
-    let records = document.getElementById("recordsList");
+    const records = document.getElementById('recordsList');
     if (!flights.length) {
       records.innerHTML = `<div class="result" style="display:block;"><h3>No Flights</h3><p>Add a flight first.</p></div>`;
       return;
     }
-    let sorted = sortFlightsByDeparture();
+
+    const sorted = sortFlightsByDeparture();
     let output = `<div class="sorted-label"><i class="fas fa-sort-amount-up"></i> Flights sorted by earliest departure</div>
       <h3 style="color:#9edcff;margin-top:24px;"><i class="fas fa-plane"></i> All Flights (Earliest first)</h3>`;
+
     sorted.forEach((f, i) => {
-      output += `<div class="record-card">
-        <h3>${i+1}. ${f.number}</h3>
-        <p><strong>Airline:</strong> ${f.airline}</p>
-        <p><strong>Route:</strong> ${f.from} → ${f.to}</p>
-        <p><strong>Departure:</strong> ${formatDate(f.departureDate)} ${f.departureTime || "Not Provided"}</p>
-        <p><strong>Arrival:</strong> ${formatDate(f.arrivalDate)} ${f.arrivalTime || "Not Provided"}</p>
-        <p><strong>Gate:</strong> ${f.gate || "Not Assigned"} · <strong>Terminal:</strong> ${f.terminal || "Not Assigned"}</p>
-        <p><strong>Status:</strong> <span class="status">${f.status}</span></p>
-      </div>`;
+      output += `
+        <div class="record-card">
+          <h3>${i + 1}. ${f.number}</h3>
+          <p><strong>Airline:</strong> ${f.airline}</p>
+          <p><strong>Route:</strong> ${f.from} → ${f.to}</p>
+          <p><strong>Departure:</strong> ${formatDate(f.departureDate)} ${f.departureTime || 'Not Provided'}</p>
+          <p><strong>Arrival:</strong> ${formatDate(f.arrivalDate)} ${f.arrivalTime || 'Not Provided'}</p>
+          <p><strong>Gate:</strong> ${f.gate || 'Not Assigned'} · <strong>Terminal:</strong> ${f.terminal || 'Not Assigned'}</p>
+          <p><strong>Status:</strong> <span class="status">${f.status}</span></p>
+        </div>
+      `;
     });
+
     records.innerHTML = output;
   }
 
+  // ============================================================
   // DISPLAY PASSENGERS
+  // ============================================================
+  function displayPassengers() {
+    const records = document.getElementById('recordsList');
+    if (!passengers.length) {
+      records.innerHTML = `<div class="result" style="display:block;"><h3>No Passengers</h3><p>Add a passenger first.</p></div>`;
+      return;
+    }
+
+    let output = `<h3 style="color:#9edcff;margin-top:24px;"><i class="fas fa-users"></i> All Passengers</h3>`;
+    passengers.forEach(p => {
+      output += `
+        <div class="record-card">
+          <h3>${p.id}</h3>
+          <p><strong>Name:</strong> ${p.name}</p>
+          <p><strong>Flight:</strong> ${p.flight}</p>
+          <p><strong>Seat:</strong> ${p.seat}</p>
+          <p><strong>Status:</strong> ${p.status}</p>
+        </div>
+      `;
+    });
+
+    records.innerHTML = output;
+  }
+</script>
+
+</body>
+</html>
