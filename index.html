@@ -27,11 +27,14 @@
     .search-tabs { display:flex; gap:25px; margin-bottom:25px; border-bottom:1px solid rgba(0,180,255,0.1); padding-bottom:15px; }
     .search-tab { display:flex; align-items:center; gap:8px; color:#9bbad3; font-weight:500; font-size:16px; cursor:pointer; padding:8px 16px; border-radius:30px; transition:0.2s; }
     .search-tab.active { color:#00bfff; background:rgba(0,180,255,0.08); }
-    .search-fields { display:grid; grid-template-columns:1fr 1fr 1fr 1fr auto; gap:15px; align-items:end; }
+    .search-fields { display:grid; grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr; gap:15px; align-items:end; }
     .search-field { display:flex; flex-direction:column; gap:6px; }
     .search-field label { color:#7fc9ff; font-size:13px; font-weight:500; }
     .search-field input, .search-field select { padding:14px 16px; background:rgba(255,255,255,0.06); border:1px solid rgba(0,180,255,0.15); border-radius:20px; color:white; font-size:15px; outline:none; transition:0.2s; backdrop-filter:blur(4px); width:100%; }
     .search-field input:focus, .search-field select:focus { border-color:#00bfff; background:rgba(0,150,255,0.08); box-shadow:0 0 0 3px rgba(0,180,255,0.1); }
+    .search-field input[type="number"] { -moz-appearance:textfield; }
+    .search-field input[type="number"]::-webkit-inner-spin-button,
+    .search-field input[type="number"]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
     .search-btn { padding:14px 35px; border:none; border-radius:30px; background:linear-gradient(135deg, #0088cc, #005f99); color:white; font-weight:600; font-size:16px; cursor:pointer; transition:0.2s; box-shadow:0 6px 14px rgba(0,80,150,0.3); display:flex; align-items:center; gap:10px; white-space:nowrap; }
     .search-btn:hover { transform:scale(1.02); background:linear-gradient(135deg, #0099dd, #006bb3); box-shadow:0 8px 20px rgba(0,120,255,0.4); }
     .results-container { width:100%; max-width:1300px; margin:20px auto; }
@@ -112,8 +115,8 @@
     footer { width:100%; max-width:1300px; text-align:center; padding:28px 20px; margin:40px auto 20px; background:rgba(0,10,25,0.7); backdrop-filter:blur(8px); border-radius:60px; border:1px solid rgba(0,150,255,0.05); color:#8bb4d0; font-weight:300; }
     footer p:first-child { font-weight:400; color:#b0d6f5; }
 
-    @media(max-width:1024px){ .search-fields { grid-template-columns:1fr 1fr; } .search-btn { grid-column:span 2; justify-content:center; } .flight-row.row-1,.flight-row.row-2,.flight-row.row-3 { grid-template-columns:repeat(2,1fr); } .flight-row.row-4 { grid-template-columns:1fr; } .form-grid.passenger-grid { grid-template-columns:repeat(2,1fr); } .flight-card { flex-direction:column; gap:15px; align-items:stretch; } .flight-info { flex-direction:column; align-items:stretch; gap:15px; } .flight-route { flex-wrap:wrap; justify-content:center; } .flight-details { align-items:center; } }
-    @media(max-width:700px){ header { flex-direction:column; align-items:flex-start; gap:12px; border-radius:40px; padding:20px; } header h1 { font-size:24px; } .hero h2 { font-size:34px; } .section { padding:24px 18px; } .search-box input { width:100%; } button { width:100%; } .search-fields { grid-template-columns:1fr; } .search-btn { grid-column:span 1; } .flight-row.row-1,.flight-row.row-2,.flight-row.row-3 { grid-template-columns:1fr; } .flight-row.row-4 { grid-template-columns:1fr; } .form-grid.passenger-grid { grid-template-columns:1fr; } .form-grid.passenger-grid .button-wrapper button { width:100%; min-width:unset; } .flight-row.row-4 button { width:100%; min-width:unset; } }
+    @media(max-width:1024px){ .search-fields { grid-template-columns:1fr 1fr 1fr; } .search-btn { grid-column:span 3; justify-content:center; } .flight-row.row-1,.flight-row.row-2,.flight-row.row-3 { grid-template-columns:repeat(2,1fr); } .flight-row.row-4 { grid-template-columns:1fr; } .form-grid.passenger-grid { grid-template-columns:repeat(2,1fr); } .flight-card { flex-direction:column; gap:15px; align-items:stretch; } .flight-info { flex-direction:column; align-items:stretch; gap:15px; } .flight-route { flex-wrap:wrap; justify-content:center; } .flight-details { align-items:center; } }
+    @media(max-width:700px){ header { flex-direction:column; align-items:flex-start; gap:12px; border-radius:40px; padding:20px; } header h1 { font-size:24px; } .hero h2 { font-size:34px; } .section { padding:24px 18px; } .search-box input { width:100%; } button { width:100%; } .search-fields { grid-template-columns:1fr 1fr; } .search-btn { grid-column:span 2; } .flight-row.row-1,.flight-row.row-2,.flight-row.row-3 { grid-template-columns:1fr; } .flight-row.row-4 { grid-template-columns:1fr; } .form-grid.passenger-grid { grid-template-columns:1fr; } .form-grid.passenger-grid .button-wrapper button { width:100%; min-width:unset; } .flight-row.row-4 button { width:100%; min-width:unset; } }
   </style>
 </head>
 <body>
@@ -144,24 +147,23 @@
   <div class="search-fields">
     <div class="search-field">
       <label><i class="fas fa-city"></i> From</label>
-      <input type="text" id="searchFrom" placeholder="e.g. Mumbai" value="Mumbai">
+      <input type="text" id="searchFrom" placeholder="e.g. Mumbai">
     </div>
     <div class="search-field">
       <label><i class="fas fa-location-dot"></i> To</label>
-      <input type="text" id="searchTo" placeholder="e.g. Singapore" value="Singapore">
+      <input type="text" id="searchTo" placeholder="e.g. Singapore">
     </div>
     <div class="search-field">
       <label><i class="fas fa-calendar-alt"></i> Departure</label>
-      <input type="date" id="searchDate" value="2026-09-14">
+      <input type="date" id="searchDate">
     </div>
     <div class="search-field">
-      <label><i class="fas fa-users"></i> Travellers</label>
-      <select id="searchTravellers">
-        <option>1 Adult</option>
-        <option>2 Adults</option>
-        <option selected>1 Adult, 1 Child</option>
-        <option>2 Adults, 1 Child</option>
-      </select>
+      <label><i class="fas fa-user"></i> Adults</label>
+      <input type="number" id="searchAdults" value="1" min="1" max="9">
+    </div>
+    <div class="search-field">
+      <label><i class="fas fa-child"></i> Children</label>
+      <input type="number" id="searchChildren" value="0" min="0" max="9">
     </div>
     <button class="search-btn" onclick="performSearch()"><i class="fas fa-search"></i> Search</button>
   </div>
@@ -183,7 +185,7 @@
     <div class="placeholder-message" id="placeholderMsg">
       <i class="fas fa-search"></i>
       <h3>Search for flights</h3>
-      <p>Enter your destination and click the <strong>Search</strong> button to see available flights.</p>
+      <p>Enter your origin, destination, and number of travellers, then click the <strong>Search</strong> button.</p>
     </div>
   </div>
 </div>
@@ -339,39 +341,58 @@
   })();
 
   // ============================================================
+  // AIRPORT NAME LOOKUP
+  // ============================================================
+  const airportNames = {
+    'pune': 'Pune International Airport',
+    'singapore': 'Changi International Airport',
+    'mumbai': 'Chhatrapati Shivaji International Airport',
+    'new york': 'John F Kennedy International Airport',
+    'dubai': 'Dubai International Airport',
+    'london': 'Heathrow Airport',
+    'tokyo': 'Narita International Airport',
+    'bom': 'Chhatrapati Shivaji International Airport',
+    'sin': 'Changi International Airport',
+    'nyc': 'John F Kennedy International Airport',
+    'dxb': 'Dubai International Airport',
+    'lhr': 'Heathrow Airport',
+    'nrt': 'Narita International Airport'
+  };
+
+  // ============================================================
   // PRE‑LOADED FLIGHT DATA (5 per route)
   // ============================================================
   const initialFlights = [
     // Mumbai → Singapore (4 Direct, 1 Stop)
-    { airline: 'Singapore Airlines', number: 'SQ-421', dep: '11:45', arr: '17:15', duration: '5h 30m', price: 42980, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Changi Intl', toTerminal: 'T1' },
-    { airline: 'Singapore Airlines', number: 'SQ-423', dep: '23:40', arr: '05:10', duration: '5h 30m', price: 38750, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Changi Intl', toTerminal: 'T1' },
-    { airline: 'IndiGo', number: '6E-1339', dep: '01:20', arr: '07:15', duration: '5h 55m', price: 32100, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T1', toAirport: 'Changi Intl', toTerminal: 'T2' },
-    { airline: 'IndiGo', number: '6E-1163', dep: '08:55', arr: '14:50', duration: '5h 55m', price: 34800, status: 'Boarding', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T1', toAirport: 'Changi Intl', toTerminal: 'T2' },
-    { airline: 'Air India', number: 'AI-2105', dep: '23:25', arr: '09:20', duration: '9h 55m', price: 51200, status: 'Scheduled', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Changi Intl', toTerminal: 'T1' },
+    { airline: 'Singapore Airlines', number: 'SQ-421', dep: '11:45', arr: '17:15', duration: '5h 30m', price: 42980, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Changi International Airport', toTerminal: 'T1' },
+    { airline: 'Singapore Airlines', number: 'SQ-423', dep: '23:40', arr: '05:10', duration: '5h 30m', price: 38750, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Changi International Airport', toTerminal: 'T1' },
+    { airline: 'IndiGo', number: '6E-1339', dep: '01:20', arr: '07:15', duration: '5h 55m', price: 32100, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T1', toAirport: 'Changi International Airport', toTerminal: 'T2' },
+    { airline: 'IndiGo', number: '6E-1163', dep: '08:55', arr: '14:50', duration: '5h 55m', price: 34800, status: 'Boarding', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T1', toAirport: 'Changi International Airport', toTerminal: 'T2' },
+    { airline: 'Air India', number: 'AI-2105', dep: '23:25', arr: '09:20', duration: '9h 55m', price: 51200, status: 'Scheduled', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'Singapore', toCode: 'SIN', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Changi International Airport', toTerminal: 'T1' },
     // Mumbai → New York (4 Direct, 1 Stop)
-    { airline: 'Air India', number: 'AI-119', dep: '01:40', arr: '07:50', duration: '16h 10m', price: 85600, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'JFK', toTerminal: 'T4' },
-    { airline: 'Air India', number: 'AI-191', dep: '00:50', arr: '07:30', duration: '16h 10m', price: 78900, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'JFK', toTerminal: 'T4' },
-    { airline: 'Air India', number: 'AI-101', dep: '02:05', arr: '08:15', duration: '16h 10m', price: 138000, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'JFK', toTerminal: 'T4' },
-    { airline: 'Air India', number: 'AI-2988', dep: '22:25', arr: '14:40', duration: '16h 15m', price: 92400, status: 'Delayed', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'JFK', toTerminal: 'T4' },
-    { airline: 'Lufthansa', number: 'LH-757', dep: '02:55', arr: '21:30', duration: '21h 30m', price: 150900, status: 'Scheduled', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'JFK', toTerminal: 'T4' },
+    { airline: 'Air India', number: 'AI-119', dep: '01:40', arr: '07:50', duration: '16h 10m', price: 85600, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'John F Kennedy International Airport', toTerminal: 'T4' },
+    { airline: 'Air India', number: 'AI-191', dep: '00:50', arr: '07:30', duration: '16h 10m', price: 78900, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'John F Kennedy International Airport', toTerminal: 'T4' },
+    { airline: 'Air India', number: 'AI-101', dep: '02:05', arr: '08:15', duration: '16h 10m', price: 138000, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'John F Kennedy International Airport', toTerminal: 'T4' },
+    { airline: 'Air India', number: 'AI-2988', dep: '22:25', arr: '14:40', duration: '16h 15m', price: 92400, status: 'Delayed', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'John F Kennedy International Airport', toTerminal: 'T4' },
+    { airline: 'Lufthansa', number: 'LH-757', dep: '02:55', arr: '21:30', duration: '21h 30m', price: 150900, status: 'Scheduled', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'New York', toCode: 'NYC', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'John F Kennedy International Airport', toTerminal: 'T4' },
     // Mumbai → Dubai (4 Direct, 1 Stop)
-    { airline: 'Emirates', number: 'EK-501', dep: '08:15', arr: '11:55', duration: '4h 40m', price: 15120, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Dubai Intl', toTerminal: 'T3' },
-    { airline: 'IndiGo', number: '6E-1711', dep: '12:30', arr: '16:20', duration: '4h 50m', price: 14125, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T1', toAirport: 'Dubai Intl', toTerminal: 'T1' },
-    { airline: 'Air India', number: 'AI-2217', dep: '16:45', arr: '20:30', duration: '5h 15m', price: 17789, status: 'Boarding', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Dubai Intl', toTerminal: 'T1' },
-    { airline: 'Emirates', number: 'EK-857', dep: '19:15', arr: '02:10', duration: '5h 55m', price: 16250, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Dubai Intl', toTerminal: 'T3' },
-    { airline: 'SpiceJet', number: 'SG-15', dep: '23:55', arr: '03:40', duration: '4h 45m', price: 13480, status: 'Delayed', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T1', toAirport: 'Dubai Intl', toTerminal: 'T1' },
+    { airline: 'Emirates', number: 'EK-501', dep: '08:15', arr: '11:55', duration: '4h 40m', price: 15120, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Dubai International Airport', toTerminal: 'T3' },
+    { airline: 'IndiGo', number: '6E-1711', dep: '12:30', arr: '16:20', duration: '4h 50m', price: 14125, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T1', toAirport: 'Dubai International Airport', toTerminal: 'T1' },
+    { airline: 'Air India', number: 'AI-2217', dep: '16:45', arr: '20:30', duration: '5h 15m', price: 17789, status: 'Boarding', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Dubai International Airport', toTerminal: 'T1' },
+    { airline: 'Emirates', number: 'EK-857', dep: '19:15', arr: '02:10', duration: '5h 55m', price: 16250, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Dubai International Airport', toTerminal: 'T3' },
+    { airline: 'SpiceJet', number: 'SG-15', dep: '23:55', arr: '03:40', duration: '4h 45m', price: 13480, status: 'Delayed', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'Dubai', toCode: 'DXB', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T1', toAirport: 'Dubai International Airport', toTerminal: 'T1' },
     // Mumbai → London (4 Direct, 1 Stop)
-    { airline: 'British Airways', number: 'BA-138', dep: '01:40', arr: '06:55', duration: '9h 45m', price: 40800, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Heathrow', toTerminal: 'T5' },
-    { airline: 'British Airways', number: 'BA-134', dep: '09:30', arr: '15:00', duration: '10h 00m', price: 52200, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Heathrow', toTerminal: 'T5' },
-    { airline: 'Air India', number: 'AI-129', dep: '05:47', arr: '11:30', duration: '10h 25m', price: 47800, status: 'Boarding', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Heathrow', toTerminal: 'T2' },
-    { airline: 'British Airways', number: 'BA-198', dep: '12:50', arr: '18:45', duration: '10h 20m', price: 64500, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Heathrow', toTerminal: 'T5' },
-    { airline: 'Virgin Atlantic', number: 'VS-355', dep: '13:40', arr: '20:30', duration: '11h 50m', price: 55800, status: 'Delayed', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Heathrow', toTerminal: 'T3' },
+    { airline: 'British Airways', number: 'BA-138', dep: '01:40', arr: '06:55', duration: '9h 45m', price: 40800, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Heathrow Airport', toTerminal: 'T5' },
+    { airline: 'British Airways', number: 'BA-134', dep: '09:30', arr: '15:00', duration: '10h 00m', price: 52200, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Heathrow Airport', toTerminal: 'T5' },
+    { airline: 'Air India', number: 'AI-129', dep: '05:47', arr: '11:30', duration: '10h 25m', price: 47800, status: 'Boarding', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Heathrow Airport', toTerminal: 'T2' },
+    { airline: 'British Airways', number: 'BA-198', dep: '12:50', arr: '18:45', duration: '10h 20m', price: 64500, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Heathrow Airport', toTerminal: 'T5' },
+    { airline: 'Virgin Atlantic', number: 'VS-355', dep: '13:40', arr: '20:30', duration: '11h 50m', price: 55800, status: 'Delayed', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'London', toCode: 'LHR', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Heathrow Airport', toTerminal: 'T3' },
     // Mumbai → Tokyo (4 Direct, 1 Stop)
-    { airline: 'Air India', number: 'AI-356', dep: '16:50', arr: '04:55', duration: '9h 05m', price: 43500, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Narita', toTerminal: 'T1' },
-    { airline: 'Air India', number: 'AI-355', dep: '08:50', arr: '14:20', duration: '9h 00m', price: 51200, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Narita', toTerminal: 'T1' },
-    { airline: 'Japan Airlines', number: 'JL-736', dep: '09:30', arr: '22:20', duration: '9h 50m', price: 39800, status: 'Boarding', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Narita', toTerminal: 'T2' },
-    { airline: 'All Nippon Airways', number: 'NH-832', dep: '19:30', arr: '08:15', duration: '9h 15m', price: 56800, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Narita', toTerminal: 'T1' },
-    { airline: 'Air India', number: 'AI-2952', dep: '11:25', arr: '02:05', duration: '14h 40m', price: 48900, status: 'On Time', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji Intl', fromTerminal: 'T2', toAirport: 'Narita', toTerminal: 'T1' }
+    { airline: 'Air India', number: 'AI-356', dep: '16:50', arr: '04:55', duration: '9h 05m', price: 43500, status: 'On Time', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Narita International Airport', toTerminal: 'T1' },
+    { airline: 'Air India', number: 'AI-355', dep: '08:50', arr: '14:20', duration: '9h 00m', price: 51200, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Narita International Airport', toTerminal: 'T1' },
+    { airline: 'Japan Airlines', number: 'JL-736', dep: '09:30', arr: '22:20', duration: '9h 50m', price: 39800, status: 'Boarding', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Narita International Airport', toTerminal: 'T2' },
+    { airline: 'All Nippon Airways', number: 'NH-832', dep: '19:30', arr: '08:15', duration: '9h 15m', price: 56800, status: 'Scheduled', stops: 'Direct', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Narita International Airport', toTerminal: 'T1' },
+    { airline: 'Air India', number: 'AI-2952', dep: '11:25', arr: '02:05', duration: '14h 40m', price: 48900, status: 'On Time', stops: '1 Stop', from: 'Mumbai', fromCode: 'BOM', to: 'Tokyo', toCode: 'NRT', fromAirport: 'Chhatrapati Shivaji International Airport', fromTerminal: 'T2', toAirport: 'Narita International Airport', toTerminal: 'T1' }
   ];
 
   // ============================================================
@@ -398,7 +419,8 @@
     'new york': ['new york', 'nyc', 'america', 'usa', 'us'],
     'dubai': ['dubai', 'dxb'],
     'london': ['london', 'lhr'],
-    'tokyo': ['tokyo', 'nrt', 'japan']
+    'tokyo': ['tokyo', 'nrt', 'japan'],
+    'pune': ['pune', 'pnq']
   };
 
   // ============================================================
@@ -414,20 +436,53 @@
   }
 
   // ============================================================
+  // HELPER: get airport name from city or code
+  // ============================================================
+  function getAirportName(cityName) {
+    const lower = cityName.toLowerCase();
+    // Check if the city name matches any key in airportNames
+    for (const [key, name] of Object.entries(airportNames)) {
+      if (lower.includes(key)) {
+        return name;
+      }
+    }
+    return ''; // Return empty if no match
+  }
+
+  // ============================================================
   // SEARCH
   // ============================================================
   function performSearch() {
-    searchPerformed = true;
     const fromInput = document.getElementById('searchFrom').value.trim().toLowerCase();
     const toInput = document.getElementById('searchTo').value.trim().toLowerCase();
+    const adults = parseInt(document.getElementById('searchAdults').value) || 1;
+    const children = parseInt(document.getElementById('searchChildren').value) || 0;
+
+    // If both fields are empty, show the placeholder
+    if (!fromInput && !toInput) {
+      const container = document.getElementById('flightResults');
+      container.innerHTML = `
+        <div class="placeholder-message" id="placeholderMsg">
+          <i class="fas fa-search"></i>
+          <h3>Search for flights</h3>
+          <p>Enter your origin, destination, and number of travellers, then click the <strong>Search</strong> button.</p>
+        </div>
+      `;
+      document.getElementById('flightCount').textContent = '0';
+      return;
+    }
+
+    searchPerformed = true;
 
     function getCityMatches(input) {
       if (!input) return [];
+      // Check if input matches any known alias
       for (const [city, aliases] of Object.entries(cityAliases)) {
         if (aliases.some(alias => input.includes(alias))) {
           return [city, ...aliases];
         }
       }
+      // If no alias, return the input itself (for custom routes)
       return [input];
     }
 
@@ -440,15 +495,18 @@
       const fromCodeLower = f.fromCode.toLowerCase();
       const toCodeLower = f.toCode.toLowerCase();
 
+      // Check if the flight's from matches any of the fromMatches
       const fromMatch = fromMatches.some(match =>
         fromCityLower.includes(match) || fromCodeLower.includes(match)
       );
+      // Check if the flight's to matches any of the toMatches
       const toMatch = toMatches.some(match =>
         toCityLower.includes(match) || toCodeLower.includes(match)
       );
       return fromMatch && toMatch;
     });
 
+    // Apply stop filter
     if (currentFilter === 'direct') filtered = filtered.filter(f => f.stops === 'Direct');
     else if (currentFilter === '1stop') filtered = filtered.filter(f => f.stops === '1 Stop');
     else if (currentFilter === '1plus') filtered = filtered.filter(f => f.stops === '1+ Stop');
@@ -471,6 +529,7 @@
           <h3>No flights found</h3>
           <p>Try adjusting your search criteria or add a new flight using the "Add Flight" section.</p>
           <p style="margin-top:10px;font-size:14px;color:#6a8aaa;">Available sample routes: Mumbai → Singapore, New York, Dubai, London, Tokyo</p>
+          <p style="font-size:13px;color:#6a8aaa;">You can add flights to any route using the "Add Flight" section.</p>
         </div>
       `;
       document.getElementById('flightCount').textContent = '0';
@@ -487,6 +546,10 @@
       const color = colors[index % colors.length];
       const stopLabel = f.stops === 'Direct' ? 'Non-stop' : f.stops;
 
+      // Get airport names - use existing if available, otherwise look up
+      const fromAirport = f.fromAirport || getAirportName(f.from) || '';
+      const toAirport = f.toAirport || getAirportName(f.to) || '';
+
       html += `
         <div class="flight-card">
           <div class="flight-info">
@@ -500,7 +563,7 @@
               <div class="route-point">
                 <div class="time">${f.dep || f.departureTime || '--:--'}</div>
                 <div class="city">${f.fromCode}</div>
-                <div class="airport">${f.fromAirport || ''}</div>
+                <div class="airport">${fromAirport}</div>
               </div>
               <div class="flight-meta">
                 <span class="duration">${f.duration || '--'}</span>
@@ -509,7 +572,7 @@
               <div class="route-point">
                 <div class="time">${f.arr || f.arrivalTime || '--:--'}</div>
                 <div class="city">${f.toCode}</div>
-                <div class="airport">${f.toAirport || ''}</div>
+                <div class="airport">${toAirport}</div>
               </div>
             </div>
           </div>
@@ -593,6 +656,10 @@
       if (!isNaN(parsed) && parsed >= 0) price = parsed;
     }
 
+    // Get airport names from lookup
+    const fromAirport = getAirportName(from) || 'Not Provided';
+    const toAirport = getAirportName(to) || 'Not Provided';
+
     const newFlight = {
       id: 'U' + String(userFlights.length + 1).padStart(3, '0'),
       number: number,
@@ -613,9 +680,9 @@
       terminal: terminal,
       departureDate: departureDate,
       arrivalDate: arrivalDate,
-      fromAirport: 'Not Provided',
+      fromAirport: fromAirport,
       fromTerminal: terminal || 'N/A',
-      toAirport: 'Not Provided',
+      toAirport: toAirport,
       toTerminal: 'N/A',
       isUserAdded: true
     };
@@ -624,7 +691,7 @@
     userFlights.push(newFlight);
 
     document.getElementById('flightMessage').innerHTML =
-      `<div class="message"><i class="fas fa-check-circle" style="color:#00d4ff;"></i> Flight <strong>${number}</strong> added! Departure: ${departureDate} ${depTime} · Duration: ${durationFormatted}</div>`;
+      `<div class="message"><i class="fas fa-check-circle" style="color:#00d4ff;"></i> Flight <strong>${number}</strong> added! Route: ${from} → ${to} · Departure: ${departureDate} ${depTime} · Duration: ${durationFormatted}</div>`;
 
     ['flightNumber', 'airline', 'fromCity', 'toCity', 'departureDate', 'departureHour', 'departureMinute', 'arrivalDate', 'arrivalHour', 'arrivalMinute', 'gate', 'terminal', 'ticketPrice'].forEach(id => {
       const el = document.getElementById(id);
@@ -802,6 +869,8 @@
   // ============================================================
   document.getElementById('searchFrom').addEventListener('keyup', function(e) { if (e.key === 'Enter') performSearch(); });
   document.getElementById('searchTo').addEventListener('keyup', function(e) { if (e.key === 'Enter') performSearch(); });
+  document.getElementById('searchAdults').addEventListener('keyup', function(e) { if (e.key === 'Enter') performSearch(); });
+  document.getElementById('searchChildren').addEventListener('keyup', function(e) { if (e.key === 'Enter') performSearch(); });
 </script>
 </body>
 </html>
